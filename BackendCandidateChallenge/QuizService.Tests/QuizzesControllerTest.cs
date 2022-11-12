@@ -92,10 +92,13 @@ public class QuizzesControllerTest
     [InlineData(3)]
     public async Task AQuizHasCorrectAnswersGetReturnsQuiz(long quizId)
     {
-        // Test would make much more sense if Correct answer was textual instead of id reference field:
+        // If answers are posted as resource, the test would make much more sense if Correct answer was textual instead of id reference field:
         // var correctAnswers = quiz.Questions.Select(x => x.CorrectAnswerText.ToLower()).ToList();
         // var correctlyAnswered = quiz.Questions.Select(x => x.Answers.Where(y => correctAnswers.Contains(y.Text.ToLower()))).Count();
-        // Or something
+        // If answers are picked from the list, I might be missing such endpoint.
+        // Is it supposed to be /api/quizzes/{quizId}/responses?
+        // In that case, I assume that we send predefined answer id(s),
+        // and validate against the correctAnswerId(s) which would return the number of correct/incorrect answers.
         using var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>());
         
         var client = testHost.CreateClient();

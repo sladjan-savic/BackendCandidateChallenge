@@ -23,7 +23,8 @@ public class QuizClient
 
     public async Task<Response<IEnumerable<Quiz>>> GetQuizzesAsync(CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_quizServiceUri, "/api/quizzes"));
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         var response = await _httpClient.SendAsync(request, cancellationToken);
@@ -34,7 +35,8 @@ public class QuizClient
 
     public async Task<Response<Quiz>> GetQuizAsync(int id, CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request = new HttpRequestMessage(HttpMethod.Get, new Uri(_quizServiceUri, "/api/quizzes/" + id));
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         var response = await _httpClient.SendAsync(request, cancellationToken);
@@ -45,7 +47,8 @@ public class QuizClient
 
     public async Task<Response<Uri>> PostQuizAsync(Quiz quiz, CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request =
             new HttpRequestMessage(HttpMethod.Post, new Uri(_quizServiceUri, "/api/quizzes"))
             {
@@ -60,7 +63,8 @@ public class QuizClient
 
     public async Task<Response<Uri>> PostAnswerAsync(int quizId, int questionId, Answer answer, CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request =
             new HttpRequestMessage(HttpMethod.Post, new Uri(_quizServiceUri, $"/api/quizzes/{quizId}/questions/{questionId}/answers"))
             {
@@ -75,7 +79,8 @@ public class QuizClient
 
     public async Task<Response<Uri>> PostQuestionAsync(int quizId, QuizQuestion question, CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request =
             new HttpRequestMessage(HttpMethod.Post, new Uri(_quizServiceUri, $"/api/quizzes/{quizId}/questions"))
             {
@@ -90,7 +95,8 @@ public class QuizClient
 
     public async Task<Response<object>> PutQuestionAsync(int quizId, int questionId, QuizQuestion question, CancellationToken cancellationToken)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file.
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
         var request =
             new HttpRequestMessage(HttpMethod.Put, new Uri(_quizServiceUri, $"/api/quizzes/{quizId}/questions/{questionId}"))
             {
@@ -105,7 +111,11 @@ public class QuizClient
 
     public async Task<Response<Uri>> PostQuizResponseAsync(QuestionResponse questionResponse, int quizId)
     {
-        // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.
+        // TODO: endpoint string should be moved into constant, or perhaps into configuration file
+        // (It may be used elsewhere, and if we ever need to change the endpoit string, we would have to make the change everywhere).
+        // This endpoint does not exist in the QuizController: '/api/quizzes/{quizId}/responses'.
+        // Is this a mistake or is it left out on purpose?
+        // There was no mention of it in the tasks list.
         var request =
             new HttpRequestMessage(HttpMethod.Post, new Uri(_quizServiceUri, $"/api/quizzes/{quizId}/responses"))
             {
