@@ -1,12 +1,13 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using QuizService.Model;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace QuizService.Tests;
@@ -68,7 +69,7 @@ public class QuizzesControllerTest
 
     // TODO: Turn the test case into Theory and parametrize it, instead of hardcoding any values (quizId).
     [Fact]
-        
+
     public async Task AQuizDoesNotExists_WhenPostingAQuestion_ReturnsNotFound()
     {
         // TODO: QuizApiEndPoint is using hardcoded quizId value. Interpolate quizId into variable string.
@@ -84,6 +85,24 @@ public class QuizzesControllerTest
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await client.PostAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"), content);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+    }
+
+    [Theory]
+    [InlineData(3)]
+    public async Task AQuizHasCorrectAnswersGetReturnsQuiz(long quizId)
+    {
+        using (var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>()))
+        {
+            var client = testHost.CreateClient();
+            var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(response.Content);
+            var quiz = JsonConvert.DeserializeObject<QuizResponseModel>(await response.Content.ReadAsStringAsync());
+            Assert.Equal(quizId, quiz.Id);
+            Assert.Equal("My third quiz", quiz.Title);
+            Assert.Equal(5, quiz.Questions.Where(x => x.Text == "Q1").First().CorrectAnswerId);
+            Assert.Equal(9, quiz.Questions.Where(x => x.Text == "Q2").First().CorrectAnswerId);
         }
     }
 }
