@@ -22,7 +22,7 @@ public class QuizController : Controller
     [HttpGet]
     public IEnumerable<QuizResponseModel> Get()
     {
-        const string sql = "SELECT * FROM Quiz;";
+        const string sql = "SELECT Id, Title FROM Quiz;";
         var quizzes = _connection.Query<Quiz>(sql);
         return quizzes.Select(quiz =>
             new QuizResponseModel
@@ -36,11 +36,11 @@ public class QuizController : Controller
     [HttpGet("{id}")]
     public object Get(int id)
     {
-        const string quizSql = "SELECT * FROM Quiz WHERE Id = @Id;";
-        var quiz = _connection.QuerySingle<Quiz>(quizSql, new {Id = id});
+        const string quizSql = "SELECT Id, Title FROM Quiz WHERE Id = @Id;";
+        var quiz = _connection.QuerySingleOrDefault<Quiz>(quizSql, new {Id = id});
         if (quiz == null)
             return NotFound();
-        const string questionsSql = "SELECT * FROM Question WHERE QuizId = @QuizId;";
+        const string questionsSql = "SELECT Id, QuizId, Text, CorrectAnswerId FROM Question WHERE QuizId = @QuizId;";
         var questions = _connection.Query<Question>(questionsSql, new {QuizId = id});
         const string answersSql = "SELECT a.Id, a.Text, a.QuestionId FROM Answer a INNER JOIN Question q ON a.QuestionId = q.Id WHERE q.QuizId = @QuizId;";
         var answers = _connection.Query<Answer>(answersSql, new {QuizId = id})
