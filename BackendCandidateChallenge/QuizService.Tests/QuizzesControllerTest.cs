@@ -93,7 +93,7 @@ public class QuizzesControllerTest
     public async Task AQuizHasCorrectAnswersGetReturnsQuiz(long quizId)
     {
         using var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-
+        // Test would make much more sense if Correct answer was textual instead of id reference field.
         var client = testHost.CreateClient();
         var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
 
