@@ -32,12 +32,15 @@ public class QuizzesControllerTest
         }
     }
 
+    // TODO: Turn the test case into Theory and parametrize it, instead of hardcoding any values (quizId).
     [Fact]
     public async Task AQuizExistGetReturnsQuiz()
     {
         using (var testHost = new TestServer(new WebHostBuilder()
                    .UseStartup<Startup>()))
         {
+            // TODO: Unit tests should not make multiple asserts, unless we are testing the state of a single object.
+            // Break up this test case into smaller tests.
             var client = testHost.CreateClient();
             const long quizId = 1;
             var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
@@ -49,6 +52,7 @@ public class QuizzesControllerTest
         }
     }
 
+    // TODO: Turn the test case into Theory and parametrize it, instead of hardcoding any values (quizId).
     [Fact]
     public async Task AQuizDoesNotExistGetFails()
     {
@@ -62,10 +66,12 @@ public class QuizzesControllerTest
         }
     }
 
+    // TODO: Turn the test case into Theory and parametrize it, instead of hardcoding any values (quizId).
     [Fact]
         
     public async Task AQuizDoesNotExists_WhenPostingAQuestion_ReturnsNotFound()
     {
+        // TODO: QuizApiEndPoint is using hardcoded quizId value. Interpolate quizId into variable string.
         const string QuizApiEndPoint = "/api/quizzes/999/questions";
 
         using (var testHost = new TestServer(new WebHostBuilder()
