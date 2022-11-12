@@ -92,16 +92,22 @@ public class QuizzesControllerTest
     [InlineData(3)]
     public async Task AQuizHasCorrectAnswersGetReturnsQuiz(long quizId)
     {
+        // Test would make much more sense if Correct answer was textual instead of id reference field:
+        // var correctAnswers = quiz.Questions.Select(x => x.CorrectAnswerText.ToLower()).ToList();
+        // var correctlyAnswered = quiz.Questions.Select(x => x.Answers.Where(y => correctAnswers.Contains(y.Text.ToLower()))).Count();
+        // Or something
         using var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-        // Test would make much more sense if Correct answer was textual instead of id reference field.
+        
         var client = testHost.CreateClient();
         var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
 
         var quiz = JsonConvert.DeserializeObject<QuizResponseModel>(await response.Content.ReadAsStringAsync());
+        var correctAnswerIds = quiz.Questions.Select(x => x.CorrectAnswerId).ToList();
+
+        var correctlyAnswered = quiz.Questions.Select(x => x.Answers.Where(y => correctAnswerIds.Contains(y.Id))).Count();
 
         Assert.Equal(quizId, quiz.Id);
         Assert.Equal("My third quiz", quiz.Title);
-        Assert.Equal(5, quiz.Questions.Where(x => x.Text == "Q1").First().CorrectAnswerId);
-        Assert.Equal(9, quiz.Questions.Where(x => x.Text == "Q2").First().CorrectAnswerId);
+        Assert.Equal(2, correctlyAnswered);
     }
 }
