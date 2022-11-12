@@ -92,17 +92,16 @@ public class QuizzesControllerTest
     [InlineData(3)]
     public async Task AQuizHasCorrectAnswersGetReturnsQuiz(long quizId)
     {
-        using (var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>()))
-        {
-            var client = testHost.CreateClient();
-            var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.NotNull(response.Content);
-            var quiz = JsonConvert.DeserializeObject<QuizResponseModel>(await response.Content.ReadAsStringAsync());
-            Assert.Equal(quizId, quiz.Id);
-            Assert.Equal("My third quiz", quiz.Title);
-            Assert.Equal(5, quiz.Questions.Where(x => x.Text == "Q1").First().CorrectAnswerId);
-            Assert.Equal(9, quiz.Questions.Where(x => x.Text == "Q2").First().CorrectAnswerId);
-        }
+        using var testHost = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+
+        var client = testHost.CreateClient();
+        var response = await client.GetAsync(new Uri(testHost.BaseAddress, $"{QuizApiEndPoint}{quizId}"));
+
+        var quiz = JsonConvert.DeserializeObject<QuizResponseModel>(await response.Content.ReadAsStringAsync());
+
+        Assert.Equal(quizId, quiz.Id);
+        Assert.Equal("My third quiz", quiz.Title);
+        Assert.Equal(5, quiz.Questions.Where(x => x.Text == "Q1").First().CorrectAnswerId);
+        Assert.Equal(9, quiz.Questions.Where(x => x.Text == "Q2").First().CorrectAnswerId);
     }
 }

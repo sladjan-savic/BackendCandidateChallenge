@@ -18,7 +18,7 @@ public class QuizzesService : IQuizzesService
         _connection = connection;
     }
 
-    public QuizResponseModel Get(int id)
+    public QuizResponseModel GetById(int id)
     {
         const string quizSql = "SELECT Id, Title FROM Quiz WHERE Id = @Id;";
         var quiz = _connection.QueryFirstOrDefault<Quiz>(quizSql, new { Id = id });
@@ -52,5 +52,5 @@ public class QuizzesService : IQuizzesService
 public interface IQuizzesService
 {
     public IEnumerable<QuizResponseModel> GetAll();
-    public QuizResponseModel Get(int id);
+    public QuizResponseModel GetById(int id);
 }

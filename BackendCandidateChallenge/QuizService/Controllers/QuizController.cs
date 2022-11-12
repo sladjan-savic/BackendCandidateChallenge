@@ -32,7 +32,7 @@ public class QuizController : Controller
     [HttpGet("{id}")]
     public ActionResult<QuizResponseModel> Get(int id)
     {
-       var quiz = _quizesService.Get(id);
+       var quiz = _quizesService.GetById(id);
 
         if (quiz == null)
             return NotFound();
