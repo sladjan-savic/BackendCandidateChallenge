@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuizClient.Tests;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using QuizClient.Tests;
 
 namespace QuizClient;
 
@@ -57,7 +57,7 @@ public class QuizClient
             new Response<Uri>(response.StatusCode, response.Headers.Location) :
             new Response<Uri>(response.StatusCode, null, await ReadErrorAsync(response));
     }
-		
+
     public async Task<Response<Uri>> PostAnswerAsync(int quizId, int questionId, Answer answer, CancellationToken cancellationToken)
     {
         // TODO: endpoint string should not be hardcoded. Move it into constant, or perhaps into configuration file.

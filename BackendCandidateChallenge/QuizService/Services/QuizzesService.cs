@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Dapper;
+﻿using Dapper;
 using QuizService.Mappings;
 using QuizService.Model;
 using QuizService.Model.Domain;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace QuizService.Services;
 
@@ -28,7 +28,8 @@ public class QuizzesService : IQuizzesService
 
         const string answersSql = "SELECT a.Id, a.Text, a.QuestionId FROM Answer a INNER JOIN Question q ON a.QuestionId = q.Id WHERE q.QuizId = @QuizId;";
         var answers = _connection.Query<Answer>(answersSql, new { QuizId = id })
-            .Aggregate(new Dictionary<int, IList<Answer>>(), (dict, answer) => {
+            .Aggregate(new Dictionary<int, IList<Answer>>(), (dict, answer) =>
+            {
                 if (!dict.ContainsKey(answer.QuestionId))
                     dict.Add(answer.QuestionId, new List<Answer>());
                 dict[answer.QuestionId].Add(answer);
