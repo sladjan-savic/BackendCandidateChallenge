@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuizService.Extensions;
+using QuizService.Middlewares;
 
 namespace QuizService;
 
@@ -36,6 +37,10 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseMiddleware<ExceptionMIddleware>();
         }
         app.UseRouting();
         app.UseEndpoints(endpoints =>

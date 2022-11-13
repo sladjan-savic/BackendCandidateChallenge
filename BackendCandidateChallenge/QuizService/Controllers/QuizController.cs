@@ -53,6 +53,7 @@ public class QuizController : Controller
         // TODO: Controllers should not contain any logic. Move this code into dedicated service method.
         // Service methods are reusable within solution.
         // TODO: Validate QuizCreateModel. Possible solution is FluentValidation.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         var sql = $"INSERT INTO Quiz (Title) VALUES('{value.Title}'); SELECT LAST_INSERT_ROWID();";
         var id = _connection.ExecuteScalar(sql);
@@ -66,6 +67,7 @@ public class QuizController : Controller
         // TODO: Controllers should not contain any logic. Move this code into dedicated service method.
         // Service methods are reusable within solution.
         // TODO: Validate QuizUpdateModel. Possible solution is FluentValidation.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "UPDATE Quiz SET Title = @Title WHERE Id = @Id";
         int rowsUpdated = _connection.Execute(sql, new { Id = id, Title = value.Title });
@@ -80,6 +82,7 @@ public class QuizController : Controller
     {
         // TODO: Controllers should not contain any logic. Move this code into dedicated service method.
         // Service methods are reusable within solution.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "DELETE FROM Quiz WHERE Id = @Id";
         int rowsDeleted = _connection.Execute(sql, new { Id = id });
@@ -97,6 +100,7 @@ public class QuizController : Controller
         // Service methods are reusable within solution.
         // TODO: Validate QuizCreateModel. Possible solution is FluentValidation.
         // Since we are referencing the quiz entity, do check if it exists.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "INSERT INTO Question (Text, QuizId) VALUES(@Text, @QuizId); SELECT LAST_INSERT_ROWID();";
         var questionId = _connection.ExecuteScalar(sql, new { Text = value.Text, QuizId = id });
@@ -112,6 +116,7 @@ public class QuizController : Controller
         // Either remove unused parameter of find usage for it (check if related data exists perhaps).
         // Possible solutions is to move the endpoint into another controller: QuestionsController
         // TODO: Validate QuestionUpdateModel. Possible solution is FluentValidation.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "UPDATE Question SET Text = @Text, CorrectAnswerId = @CorrectAnswerId WHERE Id = @QuestionId";
         int rowsUpdated = _connection.Execute(sql, new { QuestionId = qid, Text = value.Text, CorrectAnswerId = value.CorrectAnswerId });
@@ -129,6 +134,7 @@ public class QuizController : Controller
         // Service methods are reusable within solution.
         // Either remove unused parameter or find usage for it.
         // Possible solutions is to move the endpoint into another controller: QuestionsController
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "DELETE FROM Question WHERE Id = @QuestionId";
         _connection.ExecuteScalar(sql, new { QuestionId = qid });
@@ -143,6 +149,7 @@ public class QuizController : Controller
         // TODO: Controllers should not contain any logic. Move this code into dedicated service method.
         // Service methods are reusable within solution.
         // TODO: Validate AnswerCreateModel. Possible solution is FluentValidation.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "INSERT INTO Answer (Text, QuestionId) VALUES(@Text, @QuestionId); SELECT LAST_INSERT_ROWID();";
         var answerId = _connection.ExecuteScalar(sql, new { Text = value.Text, QuestionId = qid });
@@ -157,6 +164,7 @@ public class QuizController : Controller
         // Also, service methods are reusable within solution.
         // Either remove unused parameters or use them.
         // TODO: Validate AnswerUpdateModel. Possible solution is FluentValidation.
+        // TODO: Wrap this logic with try-catch. Add logs.
 
         const string sql = "UPDATE Answer SET Text = @Text WHERE Id = @AnswerId";
 
@@ -174,7 +182,9 @@ public class QuizController : Controller
     {
         // TODO: Controllers should not contain any logic. Move this code into dedicated service method.
         // Also, service methods are reusable within solution.
-        // Either remove unused parameters or use them. Possible solutions is to move the endpoint into another controller: AnswersController
+        // Either remove unused parameters or use them. Possible solutions is to move the endpoint into another controller: AnswersController.
+        // TODO: Wrap this logic with try-catch. Add logs.
+
         const string sql = "DELETE FROM Answer WHERE Id = @AnswerId";
         _connection.ExecuteScalar(sql, new { AnswerId = aid });
         return NoContent();
